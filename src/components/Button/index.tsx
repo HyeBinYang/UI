@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
-import { css } from "@emotion/css";
+import { css } from "@emotion/react";
 import useRippleEffect from "../../hooks/useRippleEffect";
+import Ripple from "../Ripple";
 
 type Props = {
   size?: "small" | "medium" | "large";
@@ -23,7 +24,7 @@ const Loader = ({ color }: LoaderProps) => {
   return (
     <span
       data-testid="loader"
-      className={css`
+      css={css`
         position: absolute;
         top: 50%;
         left: 50%;
@@ -32,7 +33,7 @@ const Loader = ({ color }: LoaderProps) => {
       `}
     >
       <span
-        className={css`
+        css={css`
           display: inline-block;
           width: 1em;
           aspect-ratio: 1;
@@ -146,7 +147,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
         color: ${loading ? "transparent" : "#fff"};
       `,
       outlined: css`
-        background-color: transparent;
+        background-color: transpar0ent;
         color: ${loading ? "transparent" : color};
         border: 1px solid ${color};
       `,
@@ -163,7 +164,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
     return (
       <button
         ref={ref}
-        className={css`
+        css={css`
           position: relative;
           display: flex;
           align-items: center;
@@ -181,35 +182,17 @@ const Button = forwardRef<HTMLButtonElement, Props>(
         {...buttonAttributes}
       >
         {ripples.map((ripple) => (
-          <span
+          <Ripple
             key={ripple.id}
-            data-testid="ripple"
-            className={css`
-              position: absolute;
-              top: ${ripple.y}px;
-              left: ${ripple.x}px;
-              transform: translate(-50%, -50%);
-              width: 500px;
-              height: 500px;
+            x={ripple.x}
+            y={ripple.y}
+            css={css`
               background-color: ${variant === "contained" ? "#fff" : color};
-              animation: ripple 0.5s linear infinite;
-              border-radius: 50%;
-              @keyframes ripple {
-                0% {
-                  transform: translate(-50%, -50%) scale(0);
-                  opacity: 0.5;
-                }
-
-                100% {
-                  transform: translate(-50%, -50%) scale(1);
-                  opacity: 0;
-                }
-              }
             `}
           />
         ))}
         <span
-          className={css`
+          css={css`
             position: absolute;
             top: 0;
             left: 0;
@@ -233,7 +216,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
         {loading && <Loader color={variant === "contained" ? "#fff" : color} />}
         {leftIcon && (
           <span
-            className={css`
+            css={css`
               display: flex;
               align-items: center;
               justify-content: center;
@@ -247,7 +230,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
         {children}
         {rightIcon && (
           <span
-            className={css`
+            css={css`
               display: flex;
               align-items: center;
               justify-content: center;

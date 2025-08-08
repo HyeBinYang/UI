@@ -33,7 +33,10 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@emotion/babel-plugin": "^11.13.5",
     "@emotion/css": "^11.13.5",
+    "@emotion/react": "^11.14.0",
     "@rollup/plugin-commonjs": "^25.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-typescript": "^11.0.0",

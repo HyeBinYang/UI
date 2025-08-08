@@ -1,4 +1,4 @@
-import { css } from "@emotion/css";
+import { css } from "@emotion/react";
 import React, { ChangeEvent, ReactNode } from "react";
 
 type Props = {
@@ -59,7 +59,7 @@ const Checkbox = ({
 
   return (
     <label
-      className={css`
+      css={css`
         display: inline-flex;
         align-items: center;
         flex-direction: ${labelPlacement === "bottom" ? "column" : "row"};
@@ -68,7 +68,7 @@ const Checkbox = ({
       `}
     >
       <span
-        className={css`
+        css={css`
           position: relative;
           padding: 9px;
           display: flex;
@@ -92,7 +92,7 @@ const Checkbox = ({
         <input
           type="checkbox"
           checked={checked}
-          className={css`
+          css={css`
             position: absolute;
             top: 0;
             left: 0;
@@ -112,7 +112,7 @@ const Checkbox = ({
             checkedIcon
           ) : (
             <svg
-              className={css`
+              css={css`
                 width: 1em;
                 height: 1em;
                 fill: currentColor;
@@ -128,7 +128,7 @@ const Checkbox = ({
           icon
         ) : (
           <svg
-            className={css`
+            css={css`
               width: 1em;
               height: 1em;
               fill: #000;
@@ -143,7 +143,7 @@ const Checkbox = ({
       </span>
       {label && (
         <span
-          className={css`
+          css={css`
             ${sizeStyle[size].label}
             line-height: 1.5;
             letter-spacing: 0.02em;
