@@ -58,6 +58,10 @@ const meta: Meta<typeof Button> = {
       control: { type: "boolean" },
       description: "Disable ripple effect",
     },
+    loading: {
+      control: { type: "boolean" },
+      description: "Show loading state",
+    },
   },
 };
 
@@ -69,7 +73,7 @@ export const Contained: Story = {
     children: "Button",
     size: "medium",
     variant: "contained",
-    bgColor: "blue",
+    color: "skyblue",
     disableRipple: false,
     onClick: () => {
       action("clicked")();
