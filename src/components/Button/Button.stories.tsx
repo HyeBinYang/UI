@@ -54,18 +54,23 @@ const meta: Meta<typeof Button> = {
       },
       description: "Right icon",
     },
+    disableRipple: {
+      control: { type: "boolean" },
+      description: "Disable ripple effect",
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Contained: Story = {
   args: {
     children: "Button",
     size: "medium",
     variant: "contained",
     bgColor: "blue",
+    disableRipple: false,
     onClick: () => {
       action("clicked")();
     },

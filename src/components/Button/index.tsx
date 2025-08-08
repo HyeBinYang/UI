@@ -11,6 +11,7 @@ type Props = {
   disabled?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  disableRipple?: boolean;
   onClick?: () => void;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -25,6 +26,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
       disabled,
       leftIcon,
       rightIcon,
+      disableRipple = false,
       onClick,
       ...buttonAttributes
     }: Props,
@@ -68,7 +70,9 @@ const Button = forwardRef<HTMLButtonElement, Props>(
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (disabled) return;
-      triggerRippleEffect(e);
+      if (!disableRipple) {
+        triggerRippleEffect(e);
+      }
       onClick?.(e);
     };
 
