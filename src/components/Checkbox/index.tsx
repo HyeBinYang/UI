@@ -4,13 +4,13 @@ import React, { ChangeEvent, ReactNode } from "react";
 type Props = {
   label?: string;
   labelPlacement?: "end" | "bottom";
-  checked: boolean;
+  checked?: boolean;
   disabled?: boolean;
   color?: string;
   size?: "small" | "medium" | "large";
   icon?: ReactNode;
   checkedIcon?: ReactNode;
-  onChange: (checked: boolean) => void;
+  onChange?: (checked: boolean) => void;
 } & Omit<React.HTMLAttributes<HTMLInputElement>, "onChange">;
 
 const Checkbox = ({
@@ -27,7 +27,7 @@ const Checkbox = ({
 }: Props) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
-    onChange(event.target.checked);
+    onChange?.(event.target.checked);
   };
 
   const sizeStyle = {

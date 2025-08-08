@@ -61,7 +61,7 @@ const meta: Meta<typeof Checkbox> = {
     },
   },
   render: (args) => {
-    const [checked, setChecked] = useState(args.checked);
+    const [checked, setChecked] = useState(false);
 
     const handleChange = (checked: boolean) => {
       setChecked(checked);
