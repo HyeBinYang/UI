@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Button from "./index";
+import { action } from "@storybook/addon-actions";
 
 const meta: Meta<typeof Button> = {
   title: "Components/Button",
@@ -9,13 +10,13 @@ const meta: Meta<typeof Button> = {
   },
   tags: ["autodocs"],
   argTypes: {
-    variant: {
-      control: { type: "select" },
-      options: ["primary", "secondary", "outline"],
-    },
     size: {
       control: { type: "select" },
       options: ["small", "medium", "large"],
+    },
+    variant: {
+      control: { type: "select" },
+      options: ["text", "contained", "outlined"],
     },
     disabled: {
       control: { type: "boolean" },
@@ -29,44 +30,11 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     children: "Button",
-    variant: "primary",
     size: "medium",
-  },
-};
-
-export const Secondary: Story = {
-  args: {
-    children: "Button",
-    variant: "secondary",
-    size: "medium",
-  },
-};
-
-export const Outline: Story = {
-  args: {
-    children: "Button",
-    variant: "outline",
-    size: "medium",
-  },
-};
-
-export const Small: Story = {
-  args: {
-    children: "Small Button",
-    size: "small",
-  },
-};
-
-export const Large: Story = {
-  args: {
-    children: "Large Button",
-    size: "large",
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    children: "Disabled Button",
-    disabled: true,
+    variant: "contained",
+    bgColor: "blue",
+    onClick: () => {
+      action("clicked")();
+    },
   },
 };

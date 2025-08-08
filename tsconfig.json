@@ -20,6 +20,6 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.stories.tsx", "**/*.test.tsx"]
+  "include": ["src/**/*", "src/setupTests.ts"],
+  "exclude": ["node_modules", "dist", "**/*.stories.tsx", "**/*.test.tsx", "src/setupTests.ts"]
 }

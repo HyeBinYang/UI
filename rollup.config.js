@@ -1,35 +1,28 @@
-const resolve = require("@rollup/plugin-node-resolve");
-const commonjs = require("@rollup/plugin-commonjs");
-const typescript = require("@rollup/plugin-typescript");
-const peerDepsExternal = require("rollup-plugin-peer-deps-external");
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
+import typescript from "@rollup/plugin-typescript";
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import analyze from "rollup-plugin-analyzer";
+// import copy from "rollup-plugin-copy";
 
-const packageJson = require("./package.json");
-
-module.exports = [
-  {
-    input: "src/index.ts",
-    output: [
-      {
-        file: packageJson.main,
-        format: "cjs",
-        sourcemap: true,
-      },
-      {
-        file: packageJson.module,
-        format: "esm",
-        sourcemap: true,
-      },
-    ],
-    plugins: [
-      peerDepsExternal(),
-      resolve(),
-      commonjs(),
-      typescript({
-        tsconfig: "./tsconfig.json",
-        declaration: true,
-        declarationDir: "./dist",
-      }),
-    ],
-    external: ["react", "react-dom"],
+export default {
+  input: "src/index.ts",
+  output: {
+    dir: "dist",
+    format: "esm",
+    preserveModules: true,
+    preserveModulesRoot: "src",
   },
-];
+  plugins: [
+    peerDepsExternal(),
+    resolve(),
+    commonjs(),
+    typescript({
+      tsconfig: "./tsconfig.build.json",
+    }),
+    analyze(),
+    // copy({
+    //   targets: [{ src: "src/assets/**/*", dest: "dist/assets" }],
+    // }),
+  ],
+};
