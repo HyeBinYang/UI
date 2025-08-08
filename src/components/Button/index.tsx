@@ -9,6 +9,8 @@ type Props = {
   textColor?: string;
   children: React.ReactNode;
   disabled?: boolean;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
   onClick?: () => void;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -21,6 +23,8 @@ const Button = forwardRef<HTMLButtonElement, Props>(
       textColor = "#fff",
       children,
       disabled,
+      leftIcon,
+      rightIcon,
       onClick,
       ...buttonAttributes
     }: Props,
@@ -137,7 +141,33 @@ const Button = forwardRef<HTMLButtonElement, Props>(
             }
           `}
         />
+        {leftIcon && (
+          <span
+            className={css`
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-right: 8px;
+              margin-left: -4px;
+            `}
+          >
+            {leftIcon}
+          </span>
+        )}
         {children}
+        {rightIcon && (
+          <span
+            className={css`
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-left: 8px;
+              margin-right: -4px;
+            `}
+          >
+            {rightIcon}
+          </span>
+        )}
       </button>
     );
   }

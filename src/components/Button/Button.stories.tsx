@@ -1,6 +1,21 @@
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import Button from "./index";
 import { action } from "@storybook/addon-actions";
+
+const Icon = () => {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M5 12H19M12 19V5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
 
 const meta: Meta<typeof Button> = {
   title: "Components/Button",
@@ -20,6 +35,24 @@ const meta: Meta<typeof Button> = {
     },
     disabled: {
       control: { type: "boolean" },
+    },
+    leftIcon: {
+      control: "select",
+      options: ["None", "Icon"],
+      mapping: {
+        None: null,
+        Icon: <Icon />,
+      },
+      description: "Left icon",
+    },
+    rightIcon: {
+      control: "select",
+      options: ["None", "Icon"],
+      mapping: {
+        None: null,
+        Icon: <Icon />,
+      },
+      description: "Right icon",
     },
   },
 };
