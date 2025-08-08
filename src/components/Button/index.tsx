@@ -22,6 +22,7 @@ type LoaderProps = {
 const Loader = ({ color }: LoaderProps) => {
   return (
     <span
+      data-testid="loader"
       className={css`
         position: absolute;
         top: 50%;
@@ -175,13 +176,14 @@ const Button = forwardRef<HTMLButtonElement, Props>(
           ${sizeStyles[size]}
           ${variantStyles[variant]}
         `}
-        disabled={disabled}
+        disabled={disabled || loading}
         onClick={handleClick}
         {...buttonAttributes}
       >
         {ripples.map((ripple) => (
           <span
             key={ripple.id}
+            data-testid="ripple"
             className={css`
               position: absolute;
               top: ${ripple.y}px;
