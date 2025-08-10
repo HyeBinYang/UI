@@ -59,13 +59,14 @@ const Radio = ({
 
         ${!disabled &&
         css`
-          &:hover > span:first-of-type {
+          &:hover > .rbn-radio {
             background-color: rgba(0, 0, 0, 0.04);
           }
         `}
       `}
     >
       <span
+        className="rbn-radio"
         css={css`
           position: relative;
           padding: 9px;
@@ -94,7 +95,7 @@ const Radio = ({
             cursor: inherit;
             opacity: 0;
           `}
-          onChange={onChecked}
+          onChange={disabled ? undefined : onChecked}
         />
         <svg
           width="20"
@@ -113,7 +114,14 @@ const Radio = ({
               <circle cx="10" cy="10" r="5" fill="currentColor" />
             </>
           ) : (
-            <circle cx="10" cy="10" r="9" stroke="#6B7280" strokeWidth="2" fill="white" />
+            <circle
+              cx="10"
+              cy="10"
+              r="9"
+              stroke={disabled ? "rgba(0, 0, 0, 0.3)" : " #6B7280"}
+              strokeWidth="2"
+              fill="white"
+            />
           )}
         </svg>
       </span>
