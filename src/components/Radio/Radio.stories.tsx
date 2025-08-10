@@ -34,7 +34,7 @@ const meta: Meta<typeof Radio> = {
       setChecked(!checked);
     };
 
-    return <Radio {...args} checked={checked} onChecked={handleChecked} />;
+    return <Radio {...args} checked={checked} value={args.label} onChecked={handleChecked} />;
   },
 };
 

@@ -68,7 +68,7 @@ const meta: Meta<typeof Checkbox> = {
       action("onChange")(checked);
     };
 
-    return <Checkbox {...args} checked={checked} onChange={handleChange} />;
+    return <Checkbox {...args} checked={checked} value={args.label} onChange={handleChange} />;
   },
 };
 

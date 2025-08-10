@@ -11,7 +11,7 @@ type Props = {
   icon?: ReactNode;
   checkedIcon?: ReactNode;
   onChange?: (checked: boolean) => void;
-} & Omit<React.HTMLAttributes<HTMLInputElement>, "onChange">;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "size">;
 
 const Checkbox = ({
   label,
@@ -65,9 +65,17 @@ const Checkbox = ({
         flex-direction: ${labelPlacement === "bottom" ? "column" : "row"};
         cursor: ${disabled ? "not-allowed" : "pointer"};
         color: ${disabled ? "rgba(0, 0, 0, 0.3)" : color};
+
+        ${!disabled &&
+        css`
+          &:hover > .rbn-checkbox {
+            background-color: rgba(0, 0, 0, 0.04);
+          }
+        `}
       `}
     >
       <span
+        className="rbn-checkbox"
         css={css`
           position: relative;
           padding: 9px;
@@ -76,13 +84,6 @@ const Checkbox = ({
           justify-content: center;
           border-radius: 50%;
 
-          ${!disabled &&
-          css`
-            &:hover {
-              background-color: rgba(0, 0, 0, 0.04);
-            }
-          `}
-
           & > svg {
             width: 1em;
             height: 1em;
@@ -90,6 +91,7 @@ const Checkbox = ({
         `}
       >
         <input
+          {...inputProps}
           type="checkbox"
           checked={checked}
           css={css`
@@ -104,8 +106,6 @@ const Checkbox = ({
           `}
           disabled={disabled}
           onChange={handleChange}
-          aria-label={label || undefined}
-          {...inputProps}
         />
         {checked ? (
           checkedIcon ? (
@@ -113,8 +113,6 @@ const Checkbox = ({
           ) : (
             <svg
               css={css`
-                width: 1em;
-                height: 1em;
                 fill: currentColor;
                 ${sizeStyle[size].svg}
               `}
@@ -129,8 +127,6 @@ const Checkbox = ({
         ) : (
           <svg
             css={css`
-              width: 1em;
-              height: 1em;
               fill: #000;
               ${sizeStyle[size].svg}
             `}

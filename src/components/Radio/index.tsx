@@ -9,7 +9,7 @@ type Props = {
   size?: "small" | "medium" | "large";
   disabled?: boolean;
   onChecked?: () => void;
-} & React.HTMLAttributes<HTMLInputElement>;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">;
 
 const Radio = ({
   checked = false,
