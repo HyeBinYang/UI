@@ -1,0 +1,162 @@
+import React, { createContext, useContext, useState } from "react";
+import { css } from "@emotion/react";
+
+type DropdownListPosition = "top" | "right" | "bottom" | "left";
+
+type DropdownState = {
+  open: boolean;
+  openDirection?: DropdownListPosition;
+  triggerOnHover?: boolean;
+  closeOnBlur?: boolean;
+  closeDropdownList: () => void;
+  openDropdownList: () => void;
+};
+
+const DropdownContext = createContext<DropdownState | null>(null);
+
+type DropdownProps = {
+  children: React.ReactNode;
+  openDirection?: DropdownListPosition;
+  triggerOnHover?: boolean;
+  closeOnBlur?: boolean;
+};
+
+const Dropdown = ({
+  children,
+  openDirection = "bottom",
+  triggerOnHover = false,
+  closeOnBlur = true,
+}: DropdownProps) => {
+  const [open, setOpen] = useState(true);
+
+  const openDropdownList = () => {
+    setOpen(true);
+  };
+
+  const closeDropdownList = () => {
+    setOpen(false);
+  };
+
+  const handlePointerEnter = () => {
+    if (triggerOnHover) openDropdownList();
+  };
+
+  const handlePointerLeave = () => {
+    if (triggerOnHover) closeDropdownList();
+  };
+
+  const handleBlur = () => {
+    closeDropdownList();
+  };
+
+  return (
+    <DropdownContext.Provider
+      value={{ open, openDirection, triggerOnHover, closeDropdownList, openDropdownList }}
+    >
+      <div
+        css={css`
+          position: relative;
+        `}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        onBlur={closeOnBlur ? handleBlur : undefined}
+      >
+        {children}
+      </div>
+    </DropdownContext.Provider>
+  );
+};
+
+const DropdownTrigger = ({
+  children,
+}: {
+  children: ((open: boolean) => React.ReactNode) | React.ReactNode;
+}) => {
+  const context = useContext(DropdownContext);
+
+  if (!context) throw new Error("Dropdown 내부에서 사용해야 합니다.");
+
+  const { open, openDropdownList, closeDropdownList } = context;
+
+  const handleClick = () => {
+    open ? closeDropdownList() : openDropdownList();
+  };
+
+  return (
+    <div
+      css={css`
+        display: inline-block;
+        cursor: pointer;
+      `}
+      onClick={handleClick}
+    >
+      {typeof children === "function" ? children(open) : children}
+    </div>
+  );
+};
+
+const DropdownList = ({ children }: { children: React.ReactNode }) => {
+  const context = useContext(DropdownContext);
+
+  if (!context) throw new Error("Dropdown 내부에서 사용해야 합니다.");
+
+  const { open, openDirection } = context;
+
+  if (!open) return null;
+
+  const getPosition = () => {
+    switch (openDirection) {
+      case "top":
+        return "bottom: 100%; left: 50%; transform: translateX(-50%);";
+      case "right":
+        return "left: 100%; top: 50%; transform: translateY(-50%);";
+      case "bottom":
+        return "top: 100%; left: 50%; transform: translateX(-50%);";
+      case "left":
+        return "right: 100%; top: 50%; transform: translateY(-50%);";
+    }
+  };
+
+  return (
+    <div
+      css={css`
+        position: absolute;
+        ${getPosition()}
+        z-index: 1000;
+      `}
+    >
+      {children}
+    </div>
+  );
+};
+
+const DropdownItem = ({
+  children,
+  onClick,
+  ...props
+}: { children: React.ReactNode; onClick?: () => void } & React.HTMLAttributes<HTMLDivElement>) => {
+  const context = useContext(DropdownContext);
+
+  if (!context) throw new Error("Dropdown 내부에서 사용해야 합니다.");
+
+  const { closeDropdownList } = context;
+
+  const handleClick = () => {
+    onClick?.();
+    closeDropdownList();
+  };
+
+  return (
+    <div {...props} onClick={handleClick} onMouseDown={(e) => e.preventDefault()}>
+      {children}
+    </div>
+  );
+};
+
+Dropdown.Trigger = DropdownTrigger;
+Dropdown.List = DropdownList;
+Dropdown.Item = DropdownItem;
+
+export default Dropdown;

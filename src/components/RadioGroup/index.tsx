@@ -43,6 +43,7 @@ const RadioGroup = ({
           flex-direction: ${row ? "row" : "column"};
           gap: 10px;
         `}
+        role="radiogroup"
       >
         {Children.map(children, (child) =>
           cloneElement(child as React.ReactElement, {
