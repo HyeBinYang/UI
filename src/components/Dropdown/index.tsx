@@ -19,15 +19,16 @@ type DropdownProps = {
   openDirection?: DropdownListPosition;
   triggerOnHover?: boolean;
   closeOnBlur?: boolean;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const Dropdown = ({
   children,
   openDirection = "bottom",
   triggerOnHover = false,
   closeOnBlur = true,
+  ...props
 }: DropdownProps) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const openDropdownList = () => {
     setOpen(true);
@@ -54,10 +55,11 @@ const Dropdown = ({
       value={{ open, openDirection, triggerOnHover, closeDropdownList, openDropdownList }}
     >
       <div
+        {...props}
         css={css`
           position: relative;
+          display: inline-block;
         `}
-        aria-haspopup="menu"
         aria-expanded={open}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
@@ -97,7 +99,14 @@ const DropdownTrigger = ({
   );
 };
 
-const DropdownList = ({ children }: { children: React.ReactNode }) => {
+const DropdownList = ({
+  children,
+  as: Tag = "div",
+  ...props
+}: {
+  children: React.ReactNode;
+  as?: React.ElementType;
+} & React.HTMLAttributes<HTMLDivElement>) => {
   const context = useContext(DropdownContext);
 
   if (!context) throw new Error("Dropdown 내부에서 사용해야 합니다.");
@@ -120,7 +129,8 @@ const DropdownList = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <div
+    <Tag
+      {...props}
       css={css`
         position: absolute;
         ${getPosition()}
@@ -128,15 +138,20 @@ const DropdownList = ({ children }: { children: React.ReactNode }) => {
       `}
     >
       {children}
-    </div>
+    </Tag>
   );
 };
 
 const DropdownItem = ({
   children,
+  as: Tag = "div",
   onClick,
   ...props
-}: { children: React.ReactNode; onClick?: () => void } & React.HTMLAttributes<HTMLDivElement>) => {
+}: {
+  children: React.ReactNode;
+  as?: React.ElementType;
+  onClick?: () => void;
+} & React.HTMLAttributes<HTMLDivElement>) => {
   const context = useContext(DropdownContext);
 
   if (!context) throw new Error("Dropdown 내부에서 사용해야 합니다.");
@@ -149,9 +164,13 @@ const DropdownItem = ({
   };
 
   return (
-    <div {...props} onClick={handleClick} onMouseDown={(e) => e.preventDefault()}>
+    <Tag
+      {...props}
+      onClick={handleClick}
+      onMouseDown={(e: React.MouseEvent<HTMLElement>) => e.preventDefault()}
+    >
       {children}
-    </div>
+    </Tag>
   );
 };
 
