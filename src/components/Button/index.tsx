@@ -163,6 +163,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
 
     return (
       <button
+        {...buttonAttributes}
         ref={ref}
         css={css`
           position: relative;
@@ -179,7 +180,6 @@ const Button = forwardRef<HTMLButtonElement, Props>(
         `}
         disabled={disabled || loading}
         onClick={handleClick}
-        {...buttonAttributes}
       >
         {ripples.map((ripple) => (
           <Ripple

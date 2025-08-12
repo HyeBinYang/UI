@@ -10,7 +10,7 @@ type RipplePosition = {
 const useRippleEffect = () => {
   const [ripples, setRipples] = useState<RipplePosition[]>([]);
 
-  const triggerRippleEffect = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const triggerRippleEffect = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const rippleID = uuidv4();
     const newRipple = { id: rippleID, x: e.clientX - rect.left, y: e.clientY - rect.top };

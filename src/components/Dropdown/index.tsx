@@ -19,6 +19,7 @@ type DropdownProps = {
   openDirection?: DropdownListPosition;
   triggerOnHover?: boolean;
   closeOnBlur?: boolean;
+  closeOnSelect?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 const Dropdown = ({
@@ -26,6 +27,7 @@ const Dropdown = ({
   openDirection = "bottom",
   triggerOnHover = false,
   closeOnBlur = true,
+  closeOnSelect = true,
   ...props
 }: DropdownProps) => {
   const [open, setOpen] = useState(false);
@@ -145,22 +147,24 @@ const DropdownList = ({
 const DropdownItem = ({
   children,
   as: Tag = "div",
+  closeOnClick = true,
   onClick,
   ...props
 }: {
   children: React.ReactNode;
   as?: React.ElementType;
-  onClick?: () => void;
-} & React.HTMLAttributes<HTMLDivElement>) => {
+  closeOnClick?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+} & React.HTMLAttributes<HTMLElement>) => {
   const context = useContext(DropdownContext);
 
   if (!context) throw new Error("Dropdown 내부에서 사용해야 합니다.");
 
   const { closeDropdownList } = context;
 
-  const handleClick = () => {
-    onClick?.();
-    closeDropdownList();
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    onClick?.(e);
+    if (closeOnClick) closeDropdownList();
   };
 
   return (

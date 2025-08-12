@@ -10,24 +10,28 @@ type Option = {
 type Props = {
   width?: number;
   options: Option[];
-  defaultSelected?: Option;
+  defaultSelected?: Option[];
   placeholder?: string;
   helperText?: {
     text: string;
     color?: string;
   };
+  multiple?: boolean;
+  renderValue?: (selected: Option[]) => React.ReactNode;
   onSelect?: (option: Option) => void;
 };
 
 const Select = ({
   width,
   options,
-  defaultSelected,
+  defaultSelected = [],
   placeholder = "Select",
   helperText,
+  multiple = false,
+  renderValue,
   onSelect,
 }: Props) => {
-  const [selected, setSelected] = useState<Option | null>(defaultSelected || null);
+  const [selected, setSelected] = useState<Option[]>(defaultSelected);
 
   return (
     <div>
@@ -42,25 +46,47 @@ const Select = ({
                 justify-content: space-between;
                 gap: 0.5rem;
                 padding: 0.5rem 1rem;
+                padding-right: 1.75rem;
                 border: 1px solid #ccc;
                 border-radius: 0.25rem;
                 cursor: pointer;
+                user-select: none;
               `}
             >
-              <span
+              <div
                 css={css`
-                  font-size: 0.875rem;
-                  color: ${selected ? "#333" : "#ccc"};
+                  width: 100%;
                 `}
               >
-                {selected?.label || placeholder}
-              </span>
+                {selected.length > 0 ? (
+                  renderValue ? (
+                    renderValue(selected)
+                  ) : (
+                    <div
+                      css={css`
+                        width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      `}
+                    >
+                      {selected.map((option) => option.label).join(", ")}
+                    </div>
+                  )
+                ) : (
+                  <span>{placeholder}</span>
+                )}
+              </div>
               <span
                 css={css`
+                  position: absolute;
+                  right: 20px;
+                  z-index: 1;
                   width: 1em;
                   height: 1em;
-                  margin-right: -0.5rem;
+                  margin-right: -0.6rem;
                   transform: rotate(${open ? "180deg" : "0deg"});
+                  background-color: #fff;
                 `}
               >
                 <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -84,7 +110,23 @@ const Select = ({
           `}
         >
           {options.map((option) => {
-            const isSelected = option.value === selected?.value;
+            const isSelected = selected.some(
+              (selectedOption) => selectedOption.value === option.value
+            );
+
+            const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+              setSelected((prev) => {
+                if (multiple) {
+                  if (prev.some((selectedOption) => selectedOption.value === option.value)) {
+                    return prev.filter((selectedOption) => selectedOption.value !== option.value);
+                  }
+
+                  return [...prev, option];
+                }
+                return [option];
+              });
+              onSelect?.(option);
+            };
 
             return (
               <Dropdown.Item
@@ -92,6 +134,7 @@ const Select = ({
                 as="li"
                 role="option"
                 aria-selected={isSelected}
+                closeOnClick={!multiple}
                 css={css`
                   list-style: none;
                   padding: 0.5rem;
@@ -108,10 +151,7 @@ const Select = ({
                     background-color: ${isSelected ? "#9e9e9e" : "#f0f0f0"};
                   }
                 `}
-                onClick={() => {
-                  setSelected(option);
-                  onSelect?.(option);
-                }}
+                onClick={handleClick}
               >
                 {option.label}
               </Dropdown.Item>
